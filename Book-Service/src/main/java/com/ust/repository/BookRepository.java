@@ -25,6 +25,7 @@ public class BookRepository {
     }
 
     public Book findById(Long id) {
+        System.out.println(books);
         return books.stream()
                 .filter(book -> book.getId().equals(id))
                 .findFirst().orElse(null);

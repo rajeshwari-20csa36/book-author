@@ -24,6 +24,7 @@ public class BookController {
 
     @GetMapping
     public List<BookDTO> getAllBooks() {
+        System.out.println(bookRepository.findAll());
         return bookRepository.findAll().stream()
                 .map(this::convertToBookDTO)
                 .collect(Collectors.toList());
