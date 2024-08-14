@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public class BookRepository {
 
-    private List<Book> books = new ArrayList<>();
+    private final List<Book> books = new ArrayList<>();
 
     public BookRepository() {
         books.add(new Book(1L, "1984", 1L));

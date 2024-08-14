@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public class AuthorRepository {
 
-    private List<Author> authors = new ArrayList<>();
+    private final List<Author> authors = new ArrayList<>();
 
     public AuthorRepository() {
         authors.add(new Author(1L, "George Orwell"));
@@ -24,9 +24,7 @@ public class AuthorRepository {
     }
 
     public Author findById(Long id) {
-        return authors.stream()
-                .filter(author -> author.getId()==(id))
-                .findFirst()
-                .orElse(null);
+        return authors.stream().filter(author -> author.getId() == id).findFirst().orElse(null);
+
     }
 }

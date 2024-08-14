@@ -5,7 +5,9 @@ import com.ust.dto.BookDTO;
 import com.ust.feing_client.AuthorClient;
 import com.ust.model.Book;
 import com.ust.repository.BookRepository;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +26,7 @@ public class BookController {
 
     @GetMapping
     public List<BookDTO> getAllBooks() {
-        System.out.println(bookRepository.findAll());
+//        System.out.println(bookRepository.findAll());
         return bookRepository.findAll().stream()
                 .map(this::convertToBookDTO)
                 .collect(Collectors.toList());
@@ -32,12 +34,16 @@ public class BookController {
 
     @GetMapping("/{id}")
     public ResponseEntity<BookDTO> getBookById(@PathVariable Long id) {
-        Book book = bookRepository.findById(id);
-        if (book != null) {
-            BookDTO bookDTO = convertToBookDTO(book);
-            return ResponseEntity.ok(bookDTO);
-        } else {
-            return ResponseEntity.notFound().build();
+        try {
+            Book book = bookRepository.findById(id);
+            if (book != null) {
+                BookDTO bookDTO = convertToBookDTO(book);
+                return ResponseEntity.ok(bookDTO);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (FeignException e) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(null);
         }
     }
 
